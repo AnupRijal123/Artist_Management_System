@@ -4,13 +4,11 @@ import LoginPage from '../components/LoginPage';
 import RegisterPage from '../components/RegisterPage';
 import DashboardPage from '../components/DashboardPage';
 
-import AddUserPage from '../components/AddComponents/AddUserPage';
-import AddArtistPage from '../components/AddComponents/AddArtistPage';
-import EditArtistPage from '../components/EditComponents/EditArtistPage.vue';
-import EditUserPage from '../components/EditComponents/EditUserPage.vue';
 import MusicList from '../components/MusicComponents/MusicList.vue';
-import AddMusicPage from "@/components/MusicComponents/AddMusicPage.vue";
-import EditMusicPage from '../components/MusicComponents/EditMusicPage.vue';
+
+import UserTab from '../components/TabComponents/UserTab.vue'
+import ArtistTab from '../components/TabComponents/ArtistTab.vue';
+
 
 const routes = [
   {
@@ -29,43 +27,25 @@ const routes = [
 
   {
     path:'/dashboard',
-    component:DashboardPage
+    component:DashboardPage,
+    children:[
+      {
+        path:'user',
+        component:UserTab,
+      },
+      {
+        path:'artist',
+        component:ArtistTab,
+      },
+      {
+        path:'/music-list/:artistId/:artistName/',
+        component:MusicList
+      },
+
+    ]
   },
 
-  {
-    path:'/add-user',
-    component:AddUserPage
-  },
 
-  {
-    path:'/add-artist',
-    component:AddArtistPage
-  },
-
-  {
-    path:'/edit-artist/:id',
-    component:EditArtistPage
-  },
-
-  {
-    path:'/edit-user/:id',
-    component:EditUserPage
-  },
-
-  {
-    path:'/music-list/:artistId/:artistName/',
-    component:MusicList
-  },
-
-  {
-    path:'/add-music/:artistId',
-    component:AddMusicPage
-  },
-
-  {
-    path:'/edit-music/:musicId',
-    component:EditMusicPage
-  }
 
 
  

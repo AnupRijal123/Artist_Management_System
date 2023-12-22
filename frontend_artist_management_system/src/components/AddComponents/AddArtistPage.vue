@@ -1,5 +1,8 @@
 <template>
     <div class="form-div">
+        <div @click="closeForm" class="close-button">
+            X
+        </div>
 
         <h1>Add Artist</h1>
 
@@ -67,6 +70,9 @@ export default{
     },
 
     methods:{
+        closeForm(){
+          this.$emit('close-form',true);
+        },
        async addArtist(){
             await axios.post('http://127.0.0.1:8000/api/register-artist',{
                 name:this.name,
@@ -76,10 +82,11 @@ export default{
                 first_release_year:this.firstReleaseYear,
                 no_of_albums_released:this.noOfAlbumsReleased,
             }).then((response)=>{
-                console.log(response)
+
             }).catch(function (error){
-                console.log(error)
+
             })
+           this.closeForm();
         },
 
     }
@@ -123,5 +130,12 @@ input{
     border:none;
     padding:10px;
     color:white;
+}
+.close-button{
+    position:absolute;
+    right:0;
+    top:-10px;
+    cursor:pointer;
+    color:red;
 }
 </style>

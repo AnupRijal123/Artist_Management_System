@@ -1,6 +1,8 @@
 <template>
     <div class="form-div">
-
+        <div @click="closeForm" class="close-button">
+            X
+        </div>
         <h1>Add Music</h1>
 
         <div class="row">
@@ -51,6 +53,9 @@ export default{
 
     },
     methods:{
+        closeForm(){
+            this.$emit('close-form',true);
+        },
         addSong(){
             axios.post('http://127.0.0.1:8000/api/add-music/'+ this.$route.params.artistId,{
                 artist_id:this.$route.params.artistId,
@@ -65,6 +70,7 @@ export default{
 
                 }
             })
+          this.closeForm();
         }
     }
 }
@@ -104,5 +110,12 @@ input{
     border:none;
     padding:10px;
     color:white;
+}
+.close-button{
+    position:absolute;
+    right:0;
+    top:-10px;
+    cursor:pointer;
+    color:red;
 }
 </style>

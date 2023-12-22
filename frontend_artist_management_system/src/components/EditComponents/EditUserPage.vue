@@ -1,5 +1,8 @@
 <template>
     <div class="form-div">
+        <div @click="closeForm" class="close-button">
+            X
+        </div>
 
         <h1>Edit User</h1>
 
@@ -60,6 +63,7 @@
 import axios from 'axios';
 
 export default{
+  props:['id'],
     data(){
         return{
             firstName:'',
@@ -74,8 +78,14 @@ export default{
         }
     },
     async mounted(){
-        console.log(this.$route.params.id);
-       await axios.get('http://127.0.0.1:8000/api/get-single-user/'+this.$route.params.id).then((response)=>{
+        console.log(localStorage.getItem('token'))
+        // console.log(this.$route.params.id);
+        console.log(this.id);
+       await axios.get('http://127.0.0.1:8000/api/get-single-user/'+this.id,{
+           params:{
+               token:localStorage.getItem('token')
+           }
+       }).then((response)=>{
           console.log(response.data.data)
             this.userInfo=response.data.data
             this.firstName=this.userInfo.first_name
@@ -90,8 +100,11 @@ export default{
 
     },
     methods:{
+        closeForm(){
+            this.$emit('close-form',true);
+        },
         async editUser(){
-           await axios.patch('http://127.0.0.1:8000/api/edit-user/'+this.$route.params.id,{
+           await axios.patch('http://127.0.0.1:8000/api/edit-user/'+this.id,{
                 first_name:this.firstName,
                 last_name:this.lastName,
                 email:this.email,
@@ -100,9 +113,14 @@ export default{
                 dob:this.dob,
                 gender:this.gender,
                 address:this.address,
-            }).then((response)=>{
+            },{
+               params:{
+                   token:localStorage.getItem('token')
+               }
+           }).then((response)=>{
                 console.log(response);
             })
+            this.closeForm();
         }
     }
 }
@@ -141,9 +159,18 @@ input{
     padding-top:20px;
 }
 .submit-button{
-    background-color:#80976d;
+    width:150px;
+    color:black;
     border:none;
-    padding:10px;
-    color:white;
+    padding:15px 20px;
+    border-radius:10px;
+    font-size:14px;
+}
+.close-button{
+    position:absolute;
+    right:0;
+    top:-10px;
+    cursor:pointer;
+    color:red;
 }
 </style>

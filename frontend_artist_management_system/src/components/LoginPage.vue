@@ -34,7 +34,8 @@ export default{
       return{
           email:'',
           password:'',
-          error:''
+          error:'',
+          token:''
       }
     },
 
@@ -42,13 +43,20 @@ export default{
 
         makeLogin(){
             console.log('hwllo')
-            axios.post('http://127.0.0.1:8000/api/login',{
+            axios.post('http://localhost:8000/api/auth/login',{
                 email:this.email,
                 password:this.password,
             }).then((response)=>{
                 console.log(response);
                    if(response.data.status==='success'){
                        console.log(response.data.message)
+
+                        console.log(response.data.token)
+                       this.token=response.data.token;
+
+                       localStorage.setItem('token',this.token);
+
+
                        this.error=response.data.message;
                        this.$router.push('/dashboard');
                    }else{

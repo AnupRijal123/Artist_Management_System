@@ -1,5 +1,8 @@
 <template>
     <div class="form-div">
+        <div @click="closeForm" class="close-button">
+            X
+        </div>
 
         <h1>Edit Music</h1>
 
@@ -38,6 +41,7 @@
 <script>
 import axios from 'axios';
 export default{
+    props:['songID'],
     data(){
         return{
             title:'',
@@ -48,8 +52,8 @@ export default{
         }
     },
     async mounted(){
-      console.log(this.$route.params)
-       await axios.get('http://127.0.0.1:8000/api/get-single-music/'+this.$route.params.musicId).then((response)=>{
+      console.log(this.songID)
+       await axios.get('http://127.0.0.1:8000/api/get-single-music/'+this.songID).then((response)=>{
            console.log(response.data.data);
            this.title=response.data.data.title;
            this.albumName=response.data.data.album_name;
@@ -59,14 +63,18 @@ export default{
         })
     },
     methods:{
+        closeForm(){
+            this.$emit('close-form',true)
+        },
        async editSong(){
-            await axios.patch('http://127.0.0.1:8000/api/edit-music/'+this.$route.params.musicId,{
+            await axios.patch('http://127.0.0.1:8000/api/edit-music/'+this.songID,{
                 title:this.title,
                 album_name:this.albumName,
                 genre:this.genre,
             }).then((response)=>{
                 console.log(response)
             })
+           this.closeForm();
         }
     }
 }
@@ -107,5 +115,12 @@ input{
     border:none;
     padding:10px;
     color:white;
+}
+.close-button{
+    position:absolute;
+    right:0;
+    top:-10px;
+    cursor:pointer;
+    color:red;
 }
 </style>

@@ -19,7 +19,7 @@
 
         <div class="row">
            <p>email</p>
-            <input type="text" v-model="email">
+            <input type="email" v-model="email">
         </div>
 
          <div class="row">
@@ -79,7 +79,8 @@ export default{
     },
     methods:{
        async makeRegistration(){
-           await axios.post('http://127.0.0.1:8000/api/register-user',{
+
+           await axios.post('http://127.0.0.1:8000/api/auth/register-user',{
               first_name:this.firstName,
               last_name:this.lastName,
               email:this.email,

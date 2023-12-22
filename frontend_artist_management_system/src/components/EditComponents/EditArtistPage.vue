@@ -1,6 +1,10 @@
 <template>
     <div class="form-div">
 
+        <div @click="closeForm" class="close-button">
+            X
+        </div>
+
         <h1>Edit Artist</h1>
         <div class="row">
             <p>Name</p>
@@ -52,6 +56,7 @@
 import axios from 'axios';
 
 export default{
+    props:['id'],
     data(){
         return{
             name:'',
@@ -64,8 +69,8 @@ export default{
         }
     },
     mounted(){
-      console.log(this.$route.params.id)
-        axios.get('http://127.0.0.1:8000/api/get-single-artist/'+this.$route.params.id).then((response)=>{
+
+        axios.get('http://127.0.0.1:8000/api/get-single-artist/'+this.id).then((response)=>{
             console.log(response.data.data);
             this.artistInfo=response.data.data;
             this.name=this.artistInfo.name;
@@ -79,8 +84,11 @@ export default{
     },
 
     methods:{
+        closeForm(){
+            this.$emit('close-form',true);
+        },
          async makeEdit(){
-             await axios.patch('http://127.0.0.1:8000/api/edit-artist/'+this.$route.params.id,{
+             await axios.patch('http://127.0.0.1:8000/api/edit-artist/'+this.id,{
                  name:this.name,
                  dob:this.dob,
                  gender:this.gender,
@@ -96,6 +104,8 @@ export default{
                  }
 
              })
+
+             this.closeForm();
 
         },
 
@@ -137,5 +147,12 @@ input{
     border:none;
     padding:10px;
     color:white;
+}
+.close-button{
+    position:absolute;
+    right:0;
+    top:-10px;
+    cursor:pointer;
+    color:red;
 }
 </style>
